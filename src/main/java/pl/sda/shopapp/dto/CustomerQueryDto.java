@@ -1,6 +1,6 @@
 package pl.sda.shopapp.dto;
 
-public final class CustomerQuery {
+public final class CustomerQueryDto {
     private String name;
     private String taxId;
 

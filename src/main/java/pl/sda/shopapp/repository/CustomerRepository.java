@@ -31,9 +31,25 @@ public interface CustomerRepository extends JpaRepository<Customer, UUID>, JpaSp
     @Query("select c from Customer c join c.addresses a where a.city  = ?1")
     Page<Customer> findByCity (String city, Pageable pageable);
 
-    /*ZAPYTANIA DYNAMICZNE - musimy rozszerzyć o JpaSpecificationExecutor<Customer>*/
-    //stworzyliśmy w pakiecie repository Clasę CustomerSpec
+    /*ZAPYTANIA NATYWNE*/
+    @Query(value = "select a.city,count(c.id) from customers c " +
+            "inner join customers_addresses ca on ca.customer_id = c.id " +
+            "inner join addresses a on a.id = ca.addresses_id " +
+            "group by a.city order by a.city",
+            nativeQuery = true)
+    List<Object[]> countCustomersByCity();
 
+    @Query(value = "select a.city as city,count(c.id) as count from customers c " +
+            "inner join customers_addresses ca on ca.customer_id = c.id " +
+            "inner join addresses a on a.id = ca.addresses_id " +
+            "group by a.city order by a.city",
+            nativeQuery = true)
+    List<CustomerByCity> groupCustomersByCity();
+
+    interface CustomerByCity{
+        String getCity();
+        int getCount();
+    }
 
 
 }

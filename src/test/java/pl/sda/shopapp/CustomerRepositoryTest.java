@@ -19,13 +19,14 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
+@Transactional
 final class CustomerRepositoryTest {
 
     @Autowired
     private CustomerRepository repository;
 
     @Test
-    void testFindById() {
+        void testFindById() {
         // given
         var person = new Person("Jan", "Kowalski", "89302002003");
         repository.saveAndFlush(person);

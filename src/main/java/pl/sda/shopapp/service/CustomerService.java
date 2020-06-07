@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import pl.sda.shopapp.dto.CreateCompanyDto;
 import pl.sda.shopapp.dto.CustomerQueryDto;
 import pl.sda.shopapp.dto.CustomerQueryResultDto;
+import pl.sda.shopapp.entity.Address;
 import pl.sda.shopapp.entity.Company;
 import pl.sda.shopapp.entity.VatNumber;
 import pl.sda.shopapp.repository.CustomerRepository;
@@ -22,11 +23,15 @@ public class CustomerService {
 
     private final CustomerRepository repository;
     private final CustomerMapper mapper;
+    private final GoogleAddressService addressService;
 
-    public CustomerService(CustomerRepository repository, CustomerMapper mapper) {
+    public CustomerService(CustomerRepository repository,
+                           CustomerMapper mapper,
+                           GoogleAddressService addressService) {
         requireNonNulls(repository);
         this.repository = repository;
         this.mapper = mapper;
+        this.addressService = addressService;
     }
 
     @Transactional
@@ -39,7 +44,15 @@ public class CustomerService {
     public List<CustomerQueryResultDto> findCustomer(CustomerQueryDto query){
           var customers = repository.findAll(CustomerSpec.withQuery(query));
           return mapper.map(customers);
+       }
 
+       @Transactional
+       public void createAddress(UUID customerId, double latitude, double longitude) {
+           var address = addressService.findAddress(latitude, longitude);
+           var customer = repository.getOne(customerId);
+           customer.addAddress(new Address(
+                   address.getStreet(), address.getCity(), address.getZipCode(), address.getCountry()));
+           repository.save(customer);
        }
     }
 

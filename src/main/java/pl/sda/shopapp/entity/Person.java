@@ -11,6 +11,7 @@ public final class Person extends Customer {
 
     private String firstName;
     private String lastName;
+    private String nickName;
 
     @JpaOnly
     private Person() {

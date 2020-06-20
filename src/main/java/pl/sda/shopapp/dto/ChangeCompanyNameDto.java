@@ -13,7 +13,7 @@ public final class ChangeCompanyNameDto {
         this.name = name;
     }
 
-    ChangeCompanyNameDto() {}
+//    ChangeCompanyNameDto() {}
 
     public String getName() {
         return name;

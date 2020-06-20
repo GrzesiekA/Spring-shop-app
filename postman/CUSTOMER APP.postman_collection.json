@@ -1,0 +1,197 @@
+{
+	"info": {
+		"_postman_id": "581c6f48-51f6-4984-b939-74d8e24c7d12",
+		"name": "CUSTOMER APP",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "GET CUSTOMERS",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8092/api/customers",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8092",
+					"path": [
+						"api",
+						"customers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CREATE CUSTOMER",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"TEST 2 S.A.\",\n    \"vatNumber\": \"0123456789\"\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8092/api/customers",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8092",
+					"path": [
+						"api",
+						"customers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UPDATE COMPANY NAME",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"NOWY TEST S.A.\"\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8092/api/customers/f1284d97-a0e3-40ff-86f1-5bca857f83a5/companyName",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8092",
+					"path": [
+						"api",
+						"customers",
+						"f1284d97-a0e3-40ff-86f1-5bca857f83a5",
+						"companyName"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CREATE ADDRESS",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"latitude\": 52.251514,\n    \"longitude\": 20.816190\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8092/api/customers/f1284d97-a0e3-40ff-86f1-5bca857f83a5/addresses",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8092",
+					"path": [
+						"api",
+						"customers",
+						"f1284d97-a0e3-40ff-86f1-5bca857f83a5",
+						"addresses"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "LIST ADDRESSES",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"latitude\": 52.250714,\n    \"longitude\": 20.876190\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8092/api/customers/f1284d97-a0e3-40ff-86f1-5bca857f83a5/addresses",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8092",
+					"path": [
+						"api",
+						"customers",
+						"f1284d97-a0e3-40ff-86f1-5bca857f83a5",
+						"addresses"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE ADDRESS",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"latitude\": 52.250714,\n    \"longitude\": 20.876190\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8092/api/customers/f1284d97-a0e3-40ff-86f1-5bca857f83a5/addresses/ba08d4e6-02a9-4a6b-bb43-610e6a26c696",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8092",
+					"path": [
+						"api",
+						"customers",
+						"f1284d97-a0e3-40ff-86f1-5bca857f83a5",
+						"addresses",
+						"ba08d4e6-02a9-4a6b-bb43-610e6a26c696"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

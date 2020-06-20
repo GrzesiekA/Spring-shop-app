@@ -30,4 +30,6 @@ public class CustomerMapper {
                         : CustomerQueryResultDto.CustomerType.PERSON
         );
     }
+
+
 }

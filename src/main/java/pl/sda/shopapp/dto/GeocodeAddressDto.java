@@ -2,14 +2,14 @@ package pl.sda.shopapp.dto;
 
 import java.util.Objects;
 
-public class GoogleAddressDto {
+public class GeocodeAddressDto {
 
     private String street;
     private String zipCode;
     private String city;
     private String country;
 
-    public GoogleAddressDto(String street, String zipCode, String city, String country) {
+    public GeocodeAddressDto(String street, String zipCode, String city, String country) {
         this.street = street;
         this.zipCode = zipCode;
         this.city = city;
@@ -37,7 +37,7 @@ public class GoogleAddressDto {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        GoogleAddressDto that = (GoogleAddressDto) o;
+        GeocodeAddressDto that = (GeocodeAddressDto) o;
         return Objects.equals(street, that.street) &&
                 Objects.equals(zipCode, that.zipCode) &&
                 Objects.equals(city, that.city) &&

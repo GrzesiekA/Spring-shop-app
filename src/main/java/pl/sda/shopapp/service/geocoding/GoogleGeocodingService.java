@@ -1,23 +1,22 @@
-package pl.sda.shopapp.service;
-
+package pl.sda.shopapp.service.geocoding;
 
 import com.google.maps.GeoApiContext;
 import com.google.maps.GeocodingApi;
 import com.google.maps.errors.ApiException;
 import com.google.maps.model.AddressComponent;
-import com.google.maps.model.AddressComponentType;
 import com.google.maps.model.GeocodingResult;
 import com.google.maps.model.LatLng;
 import org.springframework.stereotype.Service;
-import pl.sda.shopapp.dto.GoogleAddressDto;
+import pl.sda.shopapp.dto.GeocodeAddressDto;
 
 import java.io.IOException;
 
 import static com.google.maps.model.AddressComponentType.*;
 import static java.util.Arrays.asList;
+import static pl.sda.shopapp.util.Preconditions.*;
 
 @Service
-public class GoogleAddressService {
+class GoogleGeocodingService implements GeocodingService {
 
     public static class GoogleAddressServiceException extends RuntimeException {
         GoogleAddressServiceException(String msg) {
@@ -27,11 +26,12 @@ public class GoogleAddressService {
 
     private final GeoApiContext context;
 
-    public GoogleAddressService(GeoApiContext context) {
+    GoogleGeocodingService(GeoApiContext context) {
+        requireNonNulls(context);
         this.context = context;
     }
 
-    public GoogleAddressDto findAddress(double latitude, double longitude) {
+    public GeocodeAddressDto find(double latitude, double longitude) {
         try {
             var results = GeocodingApi
                     .reverseGeocode(context, new LatLng(latitude, longitude))
@@ -40,37 +40,35 @@ public class GoogleAddressService {
             if (results.length > 0) {
                 return extractAddress(results[0]);
             } else {
-                throw new GoogleAddressServiceException("Cannot find address.");
+                throw new GoogleAddressServiceException("Cannot find address");
             }
-
-        } catch (ApiException | IOException | InterruptedException e) {
+        } catch (ApiException | InterruptedException | IOException e) {
             throw new GoogleAddressServiceException("Google service failed: " + e.getMessage());
         }
     }
 
-    private GoogleAddressDto extractAddress(GeocodingResult result) {
-        var streetNumber = "UNKNOWN";
+    private GeocodeAddressDto extractAddress(GeocodingResult result) {
+        var streetNumber = "UKNOWN";
         var street = "UNKNOWN";
         var city = "UNKNOWN";
         var zipCode = "UNKNOWN";
         var country = "UNKNOWN";
 
-        for(AddressComponent component : result.addressComponents){
+        for (AddressComponent component : result.addressComponents) {
             var types = asList(component.types);
-            if(types.contains(STREET_NUMBER)){
-                streetNumber=component.shortName;
-            }else if(types.contains(ROUTE)){
+            if (types.contains(STREET_NUMBER)) {
+                streetNumber = component.shortName;
+            } else if (types.contains(ROUTE)) {
                 street = component.shortName;
-            }else if(types.contains(LOCALITY)){
+            } else if (types.contains(LOCALITY)) {
                 city = component.shortName;
-            }else if(types.contains(POSTAL_CODE)){
+            } else if (types.contains(POSTAL_CODE)) {
                 zipCode = component.shortName;
-            }else if(types.contains(COUNTRY)){
+            } else if (types.contains(COUNTRY)) {
                 country = component.shortName;
             }
         }
 
-        return new GoogleAddressDto(street + " " + streetNumber, zipCode, city, country);
-
+        return new GeocodeAddressDto(street + " " + streetNumber, zipCode, city, country);
     }
 }

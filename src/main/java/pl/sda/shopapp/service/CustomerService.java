@@ -1,6 +1,7 @@
 package pl.sda.shopapp.service;
 
 import org.springframework.stereotype.Service;
+import pl.sda.shopapp.dto.AddressDto;
 import pl.sda.shopapp.dto.CreateCompanyDto;
 import pl.sda.shopapp.dto.CustomerQueryDto;
 import pl.sda.shopapp.dto.CustomerQueryResultDto;
@@ -45,6 +46,10 @@ public class CustomerService {
           return mapper.map(customers);
        }
 
+    @Transactional
+    public void changeCompanyName(UUID customerId, String name) {
+        repository.updateCompanyName(customerId, name);
+    }
        @Transactional
        public void createAddress(UUID customerId, double latitude, double longitude) {
            var address = addressService.find(latitude, longitude);
@@ -53,6 +58,18 @@ public class CustomerService {
                    address.getStreet(), address.getCity(), address.getZipCode(), address.getCountry()));
            repository.save(customer);
        }
+
+    public List<AddressDto> listAddresses(UUID customerId) {
+        var customer = repository.getOne(customerId);
+        return mapper.mapAddresses(customer.getAddresses());
+    }
+
+    @Transactional
+    public void deleteAddress(UUID customerId, UUID addressId) {
+        var customer = repository.getOne(customerId);
+        customer.removeAddress(addressId);
+        repository.save(customer);
+    }
  }
 
 

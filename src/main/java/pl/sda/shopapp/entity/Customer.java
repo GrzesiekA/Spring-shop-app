@@ -1,9 +1,6 @@
 package pl.sda.shopapp.entity;
 
-
 import pl.sda.shopapp.util.JpaOnly;
-import pl.sda.shopapp.util.Preconditions;
-
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -55,6 +52,13 @@ public abstract class Customer {
         if (!addresses.contains(address)) {
             addresses.add(address);
         }
+    }
+
+    public void removeAddress(UUID addressId) {
+        addresses.stream()
+                .filter(address -> address.getId().equals(addressId))
+                .findFirst()
+                .ifPresent(address -> addresses.remove(address));
     }
 
     public List<Address> getAddresses() {

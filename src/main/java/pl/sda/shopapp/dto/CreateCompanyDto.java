@@ -42,8 +42,6 @@ public final class CreateCompanyDto {
 
     @Override
     public int hashCode() {
-        int result = name.hashCode();
-        result = 31 * result + vatNumber.hashCode();
-        return result;
+        return Objects.hash(name, vatNumber);
     }
 }

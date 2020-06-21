@@ -7,13 +7,12 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
-import pl.sda.shopapp.service.CustomerService;
-
+import pl.sda.shopapp.service.customer.CustomerService;
 
 import java.util.UUID;
 
-import static org.mockito.ArgumentMatchers.*;
-
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -30,11 +29,11 @@ class CustomerRestControllerTest {
 
     @Test
     void testCreateCompany() throws Exception {
-        //given
+        // given
         var id = UUID.randomUUID();
-        BDDMockito.given(service.createCompany(any())).willReturn(id);
+        given(service.createCompany(any())).willReturn(id);
 
-
+        // when
         mvc.perform(post("/api/customers")
                 .header("Content-Type", "application/json")
                 .content("{\n" +
@@ -48,11 +47,10 @@ class CustomerRestControllerTest {
 
     @Test
     void testFailedData() throws Exception {
-
         mvc.perform(post("/api/customers")
                 .header("Content-Type", "application/json")
                 .content("{\n" +
-                        "    \"name\": \"TEST 2 S.A.\",\n" +
+                        "    \"name\": \"TEST 2 S.A.\"" +
                         "}"))
                 .andDo(print())
                 .andExpect(status().is4xxClientError());

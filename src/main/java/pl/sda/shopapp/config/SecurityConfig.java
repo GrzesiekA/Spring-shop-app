@@ -8,8 +8,16 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import javax.sql.DataSource;
+
 @Configuration
 class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+    private final DataSource dataSource; //z application properties
+
+    public SecurityConfig(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -18,15 +26,20 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/**").authenticated()
                 .and()
                 .csrf().disable()
-                .httpBasic();
+                .httpBasic()
+                .and()
+                .headers().frameOptions().sameOrigin();//umozliwienie właściego wyświtlania ramek w h2-console;
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication()
-                .withUser("admin")
-                .password(passwordEncoder().encode("admin"))
-                .roles("ADMIN");
+        auth.jdbcAuthentication()
+                .dataSource(dataSource);//wskazanie bazy danych
+ //               .withDefaultSchema()//automatycznie sam utworzy tabelki na podstawie pliku wewnątrz bibliotek Springa
+                                    // (działa na wybranych bazach danych)
+//                .withUser("admin")
+//                .password(passwordEncoder().encode("admin"))
+//                .roles("ADMIN");
     }
 
     @Bean
